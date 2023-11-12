@@ -1,7 +1,7 @@
 import cors from "cors";
 import ip from "ip";
 import bookRoutes from "./routes/book.routes";
-import express, { Application, response } from "express";
+import express, { Application, Request, Response } from "express";
 import { HttpResponse } from "./domain/response";
 import { Code } from "./enum/code.enum";
 import { Status } from "./enum/status.enum";
@@ -29,7 +29,7 @@ export class App {
 
     private routes(): void {
         this.app.use('/books', bookRoutes);
-        this.app.get('/', (_, res) => res.status(Code.OK).send(new HttpResponse(Code.OK, Status.OK, 'Welcome to the RestAPI for Books v1.0')));
-        this.app.all('*', (_, res) => res.status(Code.NOT_FOUND).send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, this.ROUTE_NOT_FOUND))); // todas las URL que no se encuentren
+        this.app.get('/', (_: Request, res: Response) => res.status(Code.OK).send(new HttpResponse(Code.OK, Status.OK, 'Welcome to the RestAPI for Books v1.0')));
+        this.app.all('*', (_: Request, res: Response) => res.status(Code.NOT_FOUND).send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, this.ROUTE_NOT_FOUND))); // todas las URL que no se encuentren
     }
 }
