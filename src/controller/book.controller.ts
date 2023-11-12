@@ -82,3 +82,25 @@ export const updateBook = async (req: Request, res: Response): Promise<Response<
             .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred'))
     }
 };
+
+export const deleteBook = async (req: Request, res: Response): Promise<Response<Book>> => {
+    console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
+    try {
+        const pool = await connection();
+        const result: ResultSet = await pool.query(QUERY.SELECT_BOOK, [req.params.bookId]);
+        if ((result[0] as Array<ResultSet>).length > 0) { // si MySQL no regresa ningún dato, no lo halló
+            const result: ResultSet = await pool.query(QUERY.DELETE_BOOK, [req.params.bookId]);
+            return res.status(Code.OK)
+                .send(new HttpResponse(Code.OK, Status.OK, 'Book deleted'))
+        }
+        else {
+            return res.status(Code.NOT_FOUND)
+                .send(new HttpResponse(Code.NOT_FOUND, Status.NOT_FOUND, 'Book not found'))
+        }
+        
+    } catch(error: unknown) {
+        console.error(error);
+        return res.status(Code.INTERNAL_SERVER_ERROR)
+            .send(new HttpResponse(Code.INTERNAL_SERVER_ERROR, Status.INTERNAL_SERVER_ERROR, 'An error occurred'))
+    }
+};
