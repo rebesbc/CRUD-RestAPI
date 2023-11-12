@@ -9,7 +9,7 @@ import { FieldPacket, OkPacket, ProcedureCallPacket, ResultSetHeader, RowDataPac
 
 type ResultSet = [OkPacket | RowDataPacket[] | ResultSetHeader[] | RowDataPacket[][] | OkPacket[] | ProcedureCallPacket, FieldPacket[]];
 
-export const getBooks = async (req: Request, res: Response): Promise<Response<Book[]>> => {
+export const getBooks = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
     try {
         const pool = await connection();
@@ -23,7 +23,7 @@ export const getBooks = async (req: Request, res: Response): Promise<Response<Bo
     }
 };
 
-export const getBook = async (req: Request, res: Response): Promise<Response<Book>> => {
+export const getBook = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
     try {
         const pool = await connection();
@@ -44,7 +44,7 @@ export const getBook = async (req: Request, res: Response): Promise<Response<Boo
     }
 };
 
-export const createBook = async (req: Request, res: Response): Promise<Response<Book>> => {
+export const createBook = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
     let book: Book = { ...req.body };
     try {
@@ -60,7 +60,7 @@ export const createBook = async (req: Request, res: Response): Promise<Response<
     }
 };
 
-export const updateBook = async (req: Request, res: Response): Promise<Response<Book>> => {
+export const updateBook = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
     let book: Book = { ...req.body };
     try {
@@ -83,7 +83,7 @@ export const updateBook = async (req: Request, res: Response): Promise<Response<
     }
 };
 
-export const deleteBook = async (req: Request, res: Response): Promise<Response<Book>> => {
+export const deleteBook = async (req: Request, res: Response): Promise<Response<HttpResponse>> => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
     try {
         const pool = await connection();
