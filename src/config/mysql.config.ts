@@ -8,7 +8,7 @@ export const connection = async () => {
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        port: 3006 || process.env.DB_PORT,
+        port: 3306 || process.env.DB_PORT,
         connectionLimit: 10 || process.env.DB_CONNECTION_LIMIT
     });
     return pool;

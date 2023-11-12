@@ -13,7 +13,7 @@ export const getBooks = async (req: Request, res: Response): Promise<Response<Bo
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method}${req.originalUrl} Request from ${req.rawHeaders[0]}${req.rawHeaders[1]}`) // host: req.rawHeaders[0], ip's host: req.rawHeaders[1]
     try {
         const pool = await connection();
-        const result: ResultSet = await pool.query(QUERY.SELECT_BOOKS);
+        const result: any = await pool.query(QUERY.SELECT_BOOKS);
         return res.status(Code.OK)
             .send(new HttpResponse(Code.OK, Status.OK, 'Books retrieved', result[0])) // lista de todos los ítems en 'books': result[0]
     } catch(error: unknown) {
