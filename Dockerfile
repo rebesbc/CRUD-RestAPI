@@ -1,16 +1,23 @@
 # versión de Node que utilizaremos como base
-FROM node:20.9.0
-# directorio del contenedor
+FROM node:20.9.0 AS node
+
+# build stage
+FROM node AS builder
 WORKDIR /usr/code
-# copiar el siguiente archivo al workdir
-COPY package.json .
-# instalar todas las dependencias y crear los módulos de Node
+COPY package*.json .
 RUN npm install
-# copia todo lo que hay en el directorio hacia el workdir
 COPY . .
-# variable de entorno con valor por defecto
+RUN npm run build
+
+# production stage
+FROM node AS production
+RUN mkdir -p /home/node/usr/code/dist && chown -R node:node /home/node/usr/code
+WORKDIR /home/node/usr/code
+COPY package*.json ./
+USER node
+RUN npm install --only=production
+COPY --chown=node:node --from=builder /usr/code/dist ./dist
 ENV SERVER_PORT 3000
-# exponer el puerto desde el contenedor para utilizarlo abiertamente
 EXPOSE $SERVER_PORT
-# comando a ejecutar para inicializar el contenedor
-CMD ["npm", "run", "start:prod"]
+ENTRYPOINT ["node", "./dist/index.js"]
+# CMD ["npm", "run", "start:prod"]
