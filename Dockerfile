@@ -17,7 +17,7 @@ RUN mkdir -p /home/node/app/dist && chown -R node:node /home/node/app
 WORKDIR /home/node/app
 COPY package*.json ./
 USER node
-RUN npm install --only=production
+RUN npm ci --only=production
 COPY --chown=node:node --from=builder /app/dist ./dist
 ENTRYPOINT ["node", "./dist/index.js"]
 # CMD ["npm", "run", "start:prod"]
